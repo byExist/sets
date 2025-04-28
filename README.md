@@ -2,8 +2,8 @@
 
 ## What is "sets"?
 
-**sets** is a lightweight and generic Go package that provides an easy-to-use interface for managing sets of comparable elements.  
-It supports common set operations like union, intersection, difference, and symmetric difference, along with basic utilities like adding, removing, cloning, and iterating elements.
+**sets** is a simple wrapper around Go's `map` type.  
+It provides basic set operations like add, remove, check existence, and standard set operations such as union, intersection, and difference.
 
 ## Features
 
