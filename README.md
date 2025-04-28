@@ -1,4 +1,4 @@
-# sets [![GoDoc](https://pkg.go.dev/badge/github.com/yourname/sets.svg)](https://pkg.go.dev/github.com/yourname/sets) [![Go Report Card](https://goreportcard.com/badge/github.com/yourname/sets)](https://goreportcard.com/report/github.com/yourname/sets)
+# sets [![GoDoc](https://pkg.go.dev/badge/github.com/byExist/sets.svg)](https://pkg.go.dev/github.com/byExist/sets) [![Go Report Card](https://goreportcard.com/badge/github.com/byExist/sets)](https://goreportcard.com/report/github.com/byExist/sets)
 
 ## What is "sets"?
 
@@ -19,7 +19,7 @@ It supports common set operations like union, intersection, difference, and symm
 To install sets, use the following command:
 
 ```bash
-go get github.com/yourname/sets
+go get github.com/byExist/sets
 ```
 
 ## Quick Start
@@ -29,7 +29,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/yourname/sets"
+	"github.com/byExist/sets"
 )
 
 func main() {
