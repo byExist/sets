@@ -2,17 +2,10 @@
 
 ## What is "sets"?
 
-**sets** is a simple wrapper around Go's `map` type.  
-It provides basic set operations like add, remove, check existence, and standard set operations such as union, intersection, and difference.
+**sets** is a generic, lightweight wrapper around Go's `map` type.
+It provides a convenient and type-safe way to perform set operations, such as element management (add/remove), containment checks, and standard set operations like union and intersection.  
+It is particularly useful for deduplication, fast membership testing, and working with logically grouped values like tags or permissions.
 
-## Features
-
-- Create new sets easily
-- Add, remove, and check for elements
-- Clone sets
-- Iterate over set elements
-- Perform standard set operations (Union, Intersection, Difference, SymmetricDifference)
-- Check set relationships (Equal, Subset, Superset, Disjoint)
 
 ## Installation
 
@@ -35,16 +28,20 @@ import (
 func main() {
 	// Create a new set
 	s := sets.New[int]()
+	
+	// Add elements to the set
 	sets.Add(s, 1)
 	sets.Add(s, 2)
 	sets.Add(s, 3)
 
-	// Iterate over set elements
-	for e := range sets.Values(s) {
+	// Iterate over set elements in sorted order
+	elems := slices.Collect(sets.Values(s))
+	slices.Sort(elems)
+	for _, e := range elems {
 		fmt.Println(e)
 	}
 
-	// Check if an element exists
+	// Check for membership
 	fmt.Println("Contains 2?", sets.Contains(s, 2))
 
 	// Remove an element
@@ -56,59 +53,71 @@ func main() {
 	sets.Add(t, 4)
 
 	union := sets.Union(s, t)
-	for e := range sets.Values(union) {
+	unionElems := slices.Collect(sets.Values(union))
+	slices.Sort(unionElems)
+	for _, e := range unionElems {
 		fmt.Println("Union element:", e)
 	}
 }
 ```
 
-## Usage
-
-The sets package provides:
-
-- Set creation and basic operations (add, remove, check elements)
-- Iterating elements
-- Standard set operations (union, intersection, difference, symmetric difference)
-- Checking set relationships (subset, superset, disjoint, equal)
-
-Refer to the API Overview below for detailed usage.
+**Output:**
+```
+1
+2
+3
+Contains 2? true
+Union element: 1
+Union element: 3
+Union element: 4
+```
 
 ## API Overview
 
 ### Constructors
 
-- `New[E comparable]() *set[E]`
-- `Collect[E comparable](i iter.Seq[E]) *set[E]`
+| Function                      | Description                   | Return    |
+|-------------------------------|------------------------------|-----------|
+| `New[E comparable]()`          | Create a new empty set        | `*Set[E]` |
+| `Collect[E comparable](i iter.Seq[E])` | Create a set from an iterator | `*Set[E]` |
 
 ### Basic Operations
 
-- `Add(s *set[E], e E)`
-- `Remove(s *set[E], e E)`
-- `Contains(s *set[E], e E) bool`
-- `Pop(s *set[E]) (E, bool)`
-- `Clear(s *set[E])`
-- `Len(s *set[E]) int`
-- `Values(s *set[E]) iter.Seq[E]`
-- `Clone(s *set[E]) *set[E]`
+| Function                       | Description                       | Return  |
+|--------------------------------|---------------------------------|---------|
+| `Add(s *Set[E], e E)`           | Add an element to the set        | `void`  |
+| `Remove(s *Set[E], e E)`        | Remove an element from the set   | `void`  |
+| `Contains(s *Set[E], e E)`      | Check if an element exists in the set | `bool`  |
+| `Pop(s *Set[E]) (E, bool)`      | Remove and return an arbitrary element | `(E, bool)` |
+| `Clear(s *Set[E])`              | Remove all elements from the set | `void`  |
+| `Len(s *Set[E]) int`            | Get the number of elements in the set | `int`   |
+| `Values(s *Set[E]) iter.Seq[E]` | Get an iterator over the set elements | `iter.Seq[E]` |
+| `Clone(s *Set[E]) *Set[E]`      | Create a copy of the set          | `*Set[E]` |
 
 ### Set Relations
 
-- `Equal(a, b *set[E]) bool`
-- `IsDisjoint(a, b *set[E]) bool`
-- `IsSubset(a, b *set[E]) bool`
-- `IsSuperset(a, b *set[E]) bool`
+| Function                         | Description                          | Return |
+|----------------------------------|------------------------------------|--------|
+| `Equal(a, b *Set[E])`             | Check if two sets are equal         | `bool` |
+| `IsDisjoint(a, b *Set[E])`        | Check if two sets have no elements in common | `bool` |
+| `IsSubset(a, b *Set[E])`          | Check if set a is a subset of set b | `bool` |
+| `IsSuperset(a, b *Set[E])`        | Check if set a is a superset of set b | `bool` |
 
 ### Set Operations
 
-- `Union(a, b *set[E]) *set[E]`
-- `Intersection(a, b *set[E]) *set[E]`
-- `Difference(a, b *set[E]) *set[E]`
-- `SymmetricDifference(a, b *set[E]) *set[E]`
+| Function                             | Description                         | Return    |
+|-------------------------------------|-----------------------------------|-----------|
+| `Union(a, b *Set[E]) *Set[E]`       | Return the union of two sets        | `*Set[E]` |
+| `Intersection(a, b *Set[E]) *Set[E]`| Return the intersection of two sets | `*Set[E]` |
+| `Difference(a, b *Set[E]) *Set[E]`  | Return the difference of two sets  | `*Set[E]` |
+| `SymmetricDifference(a, b *Set[E]) *Set[E]` | Return the symmetric difference of two sets | `*Set[E]` |
 
-## Notes
+## Limitations
 
-- The sets package **is not concurrency-safe**.  
-  If you need to access a set from multiple goroutines, you must synchronize access externally.
+- Not safe for concurrent access  
+  Use a sync.Mutex if multiple goroutines will access the set.
+- Only works with types that are `comparable` in Go  
+  (e.g., slices and maps cannot be used as set elements)
 
 ## License
 
