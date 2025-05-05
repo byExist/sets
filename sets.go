@@ -1,7 +1,11 @@
 package sets
 
 import (
+	"encoding/json"
+	"fmt"
 	"iter"
+	"slices"
+	"strings"
 )
 
 var exists = struct{}{}
@@ -9,6 +13,40 @@ var exists = struct{}{}
 // Set represents a generic Set of comparable elements.
 type Set[E comparable] struct {
 	data map[E]struct{}
+}
+
+// String implements fmt.Stringer for Set[E].
+func (s *Set[E]) String() string {
+	elems := slices.Collect(Values(s))
+	var b strings.Builder
+	b.WriteString("Set{")
+	for i, e := range elems {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+		b.WriteString(fmt.Sprint(e))
+	}
+	b.WriteString("}")
+	return b.String()
+}
+
+// MarshalJSON implements json.Marshaler for Set[E].
+func (s *Set[E]) MarshalJSON() ([]byte, error) {
+	elems := slices.Collect(Values(s))
+	return json.Marshal(elems)
+}
+
+// UnmarshalJSON implements json.Unmarshaler for Set[E].
+func (s *Set[E]) UnmarshalJSON(data []byte) error {
+	var elems []E
+	if err := json.Unmarshal(data, &elems); err != nil {
+		return err
+	}
+	s.data = make(map[E]struct{}, len(elems))
+	for _, e := range elems {
+		s.data[e] = exists
+	}
+	return nil
 }
 
 // New creates and returns a new empty set.

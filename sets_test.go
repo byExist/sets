@@ -1,6 +1,7 @@
 package sets_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"slices"
 	"testing"
@@ -9,6 +10,32 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestString(t *testing.T) {
+	s := sets.New[int]()
+	sets.Add(s, 2)
+	sets.Add(s, 1)
+	output := s.String()
+
+	assert.Contains(t, output, "Set{")
+	assert.Contains(t, output, "1")
+	assert.Contains(t, output, "2")
+}
+
+func TestMarshalUnmarshalJSON(t *testing.T) {
+	s := sets.New[int]()
+	sets.Add(s, 1)
+	sets.Add(s, 2)
+
+	data, err := json.Marshal(s)
+	require.NoError(t, err)
+
+	var decoded sets.Set[int]
+	err = json.Unmarshal(data, &decoded)
+	require.NoError(t, err)
+
+	assert.True(t, sets.Equal(s, &decoded))
+}
 
 func TestNew(t *testing.T) {
 	s := sets.New[int]()
@@ -452,4 +479,37 @@ func ExampleSymmetricDifference() {
 
 	// Output:
 	// [1 3]
+}
+
+func ExampleSet_String() {
+	s := sets.New[int]()
+	sets.Add(s, 3)
+	sets.Add(s, 1)
+	sets.Add(s, 2)
+	fmt.Println(s.String())
+	// Output:
+	// Set{1, 2, 3}
+}
+
+func ExampleSet_MarshalJSON() {
+	s := sets.New[int]()
+	sets.Add(s, 1)
+	sets.Add(s, 2)
+	data, _ := json.Marshal(s)
+	fmt.Println(string(data))
+	// Output:
+	// [1,2]
+}
+
+func ExampleSet_UnmarshalJSON() {
+	var s sets.Set[int]
+	err := json.Unmarshal([]byte(`[1,2,3]`), &s)
+	if err != nil {
+		panic(err)
+	}
+	elems := slices.Collect(sets.Values(&s))
+	slices.Sort(elems)
+	fmt.Println(elems)
+	// Output:
+	// [1 2 3]
 }

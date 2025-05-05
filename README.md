@@ -112,6 +112,14 @@ Union element: 4
 | `Difference(a, b *Set[E]) *Set[E]`  | Return the difference of two sets  | O(n)            |
 | `SymmetricDifference(a, b *Set[E]) *Set[E]` | Return the symmetric difference of two sets | O(n + m) |
 
+### Methods
+
+| Method                             | Description                              | Time Complexity |
+|------------------------------------|------------------------------------------|-----------------|
+| `(*Set[E]) String() string`        | Returns a human-readable string format of the set | O(n)        |
+| `(*Set[E]) MarshalJSON() ([]byte, error)` | Serializes the set to JSON format       | O(n)            |
+| `(*Set[E]) UnmarshalJSON([]byte) error` | Parses JSON data into a set             | O(n)            |
+
 ## Limitations
 
 - Not safe for concurrent access  
