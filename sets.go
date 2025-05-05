@@ -4,7 +4,7 @@ import (
 	"iter"
 )
 
-var empty = struct{}{}
+var exists = struct{}{}
 
 // Set represents a generic Set of comparable elements.
 type Set[E comparable] struct {
@@ -20,14 +20,14 @@ func New[E comparable]() *Set[E] {
 func Collect[E comparable](i iter.Seq[E]) *Set[E] {
 	s := New[E]()
 	for e := range i {
-		s.data[e] = empty
+		s.data[e] = exists
 	}
 	return s
 }
 
 // Add inserts an element into the set.
 func Add[E comparable](s *Set[E], e E) {
-	s.data[e] = empty
+	s.data[e] = exists
 }
 
 // Remove deletes an element from the set.
@@ -78,7 +78,7 @@ func Values[E comparable](s *Set[E]) iter.Seq[E] {
 func Clone[E comparable](s *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range s.data {
-		result.data[e] = empty
+		result.data[e] = exists
 	}
 	return result
 }
@@ -136,10 +136,10 @@ func IsSuperset[E comparable](a, b *Set[E]) bool {
 func Union[E comparable](a, b *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range a.data {
-		result.data[e] = empty
+		result.data[e] = exists
 	}
 	for e := range b.data {
-		result.data[e] = empty
+		result.data[e] = exists
 	}
 	return result
 }
@@ -149,7 +149,7 @@ func Intersection[E comparable](a, b *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range a.data {
 		if _, ok := b.data[e]; ok {
-			result.data[e] = empty
+			result.data[e] = exists
 		}
 	}
 	return result
@@ -160,7 +160,7 @@ func Difference[E comparable](a, b *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range a.data {
 		if _, ok := b.data[e]; !ok {
-			result.data[e] = empty
+			result.data[e] = exists
 		}
 	}
 	return result
@@ -171,12 +171,12 @@ func SymmetricDifference[E comparable](a, b *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range a.data {
 		if _, ok := b.data[e]; !ok {
-			result.data[e] = empty
+			result.data[e] = exists
 		}
 	}
 	for e := range b.data {
 		if _, ok := a.data[e]; !ok {
-			result.data[e] = empty
+			result.data[e] = exists
 		}
 	}
 	return result
