@@ -25,28 +25,6 @@ func Collect[E comparable](i iter.Seq[E]) *Set[E] {
 	return s
 }
 
-// Clone returns a deep copy of the given set.
-func Clone[E comparable](s *Set[E]) *Set[E] {
-	result := New[E]()
-	for e := range s.data {
-		result.data[e] = empty
-	}
-	return result
-}
-
-// Len returns the number of elements in the set.
-func Len[E comparable](s *Set[E]) int {
-	return len(s.data)
-}
-
-// Contains checks if the set contains the given element.
-func Contains[E comparable](s *Set[E], e E) bool {
-	if _, ok := s.data[e]; ok {
-		return true
-	}
-	return false
-}
-
 // Add inserts an element into the set.
 func Add[E comparable](s *Set[E], e E) {
 	s.data[e] = empty
@@ -55,6 +33,14 @@ func Add[E comparable](s *Set[E], e E) {
 // Remove deletes an element from the set.
 func Remove[E comparable](s *Set[E], e E) {
 	delete(s.data, e)
+}
+
+// Contains checks if the set contains the given element.
+func Contains[E comparable](s *Set[E], e E) bool {
+	if _, ok := s.data[e]; ok {
+		return true
+	}
+	return false
 }
 
 // Pop removes and returns an arbitrary element from the set.
@@ -72,6 +58,11 @@ func Clear[E comparable](s *Set[E]) {
 	s.data = make(map[E]struct{})
 }
 
+// Len returns the number of elements in the set.
+func Len[E comparable](s *Set[E]) int {
+	return len(s.data)
+}
+
 // Values returns an iterator over all elements in the set.
 func Values[E comparable](s *Set[E]) iter.Seq[E] {
 	return func(yield func(E) bool) {
@@ -81,6 +72,15 @@ func Values[E comparable](s *Set[E]) iter.Seq[E] {
 			}
 		}
 	}
+}
+
+// Clone returns a deep copy of the given set.
+func Clone[E comparable](s *Set[E]) *Set[E] {
+	result := New[E]()
+	for e := range s.data {
+		result.data[e] = empty
+	}
+	return result
 }
 
 // Equal checks if two sets contain exactly the same elements.
