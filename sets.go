@@ -147,6 +147,9 @@ func Union[E comparable](a, b *Set[E]) *Set[E] {
 
 // Intersection (A ∩ B): returns a new set containing only elements present in both sets.
 func Intersection[E comparable](a, b *Set[E]) *Set[E] {
+	if len(a.data) > len(b.data) {
+		a, b = b, a
+	}
 	result := New[E]()
 	for e := range a.data {
 		if _, ok := b.data[e]; ok {
