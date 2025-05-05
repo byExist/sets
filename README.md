@@ -76,41 +76,41 @@ Union element: 4
 
 ### Constructors
 
-| Function                      | Description                   | Return    |
-|-------------------------------|------------------------------|-----------|
-| `New[E comparable]()`          | Create a new empty set        | `*Set[E]` |
-| `Collect[E comparable](i iter.Seq[E])` | Create a set from an iterator | `*Set[E]` |
+| Function                      | Description                   | Time Complexity |
+|-------------------------------|------------------------------|-----------------|
+| `New[E comparable]()`          | Create a new empty set        | O(1)            |
+| `Collect[E comparable](i iter.Seq[E])` | Create a set from an iterator | O(n)            |
 
 ### Basic Operations
 
-| Function                       | Description                       | Return  |
-|--------------------------------|---------------------------------|---------|
-| `Add(s *Set[E], e E)`           | Add an element to the set        | `void`  |
-| `Remove(s *Set[E], e E)`        | Remove an element from the set   | `void`  |
-| `Contains(s *Set[E], e E)`      | Check if an element exists in the set | `bool`  |
-| `Pop(s *Set[E]) (E, bool)`      | Remove and return an arbitrary element | `(E, bool)` |
-| `Clear(s *Set[E])`              | Remove all elements from the set | `void`  |
-| `Len(s *Set[E]) int`            | Get the number of elements in the set | `int`   |
-| `Values(s *Set[E]) iter.Seq[E]` | Get an iterator over the set elements | `iter.Seq[E]` |
-| `Clone(s *Set[E]) *Set[E]`      | Create a copy of the set          | `*Set[E]` |
+| Function                       | Description                       | Time Complexity |
+|--------------------------------|---------------------------------|-----------------|
+| `Add(s *Set[E], e E)`           | Add an element to the set        | O(1)            |
+| `Remove(s *Set[E], e E)`        | Remove an element from the set   | O(1)            |
+| `Contains(s *Set[E], e E)`      | Check if an element exists in the set | O(1)        |
+| `Pop(s *Set[E]) (E, bool)`      | Remove and return an arbitrary element | O(1)       |
+| `Clear(s *Set[E])`              | Remove all elements from the set | O(1)            |
+| `Len(s *Set[E]) int`            | Get the number of elements in the set | O(1)        |
+| `Values(s *Set[E]) iter.Seq[E]` | Get an iterator over the set elements | O(n)        |
+| `Clone(s *Set[E]) *Set[E]`      | Create a copy of the set          | O(n)            |
 
 ### Set Relations
 
-| Function                         | Description                          | Return |
-|----------------------------------|------------------------------------|--------|
-| `Equal(a, b *Set[E])`             | Check if two sets are equal         | `bool` |
-| `IsDisjoint(a, b *Set[E])`        | Check if two sets have no elements in common | `bool` |
-| `IsSubset(a, b *Set[E])`          | Check if set a is a subset of set b | `bool` |
-| `IsSuperset(a, b *Set[E])`        | Check if set a is a superset of set b | `bool` |
+| Function                         | Description                          | Time Complexity |
+|----------------------------------|------------------------------------|-----------------|
+| `Equal(a, b *Set[E])`             | Check if two sets are equal         | O(n)            |
+| `IsDisjoint(a, b *Set[E])`        | Check if two sets have no elements in common | O(n)      |
+| `IsSubset(a, b *Set[E])`          | Check if set a is a subset of set b | O(n)            |
+| `IsSuperset(a, b *Set[E])`        | Check if set a is a superset of set b | O(n)          |
 
 ### Set Operations
 
-| Function                             | Description                         | Return    |
-|-------------------------------------|-----------------------------------|-----------|
-| `Union(a, b *Set[E]) *Set[E]`       | Return the union of two sets        | `*Set[E]` |
-| `Intersection(a, b *Set[E]) *Set[E]`| Return the intersection of two sets | `*Set[E]` |
-| `Difference(a, b *Set[E]) *Set[E]`  | Return the difference of two sets  | `*Set[E]` |
-| `SymmetricDifference(a, b *Set[E]) *Set[E]` | Return the symmetric difference of two sets | `*Set[E]` |
+| Function                             | Description                         | Time Complexity |
+|-------------------------------------|-----------------------------------|-----------------|
+| `Union(a, b *Set[E]) *Set[E]`       | Return the union of two sets        | O(n)            |
+| `Intersection(a, b *Set[E]) *Set[E]`| Return the intersection of two sets | O(n)            |
+| `Difference(a, b *Set[E]) *Set[E]`  | Return the difference of two sets  | O(n)            |
+| `SymmetricDifference(a, b *Set[E]) *Set[E]` | Return the symmetric difference of two sets | O(n) |
 
 ## Limitations
 
