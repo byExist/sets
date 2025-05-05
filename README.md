@@ -110,7 +110,7 @@ Union element: 4
 | `Union(a, b *Set[E]) *Set[E]`       | Return the union of two sets        | O(n)            |
 | `Intersection(a, b *Set[E]) *Set[E]`| Return the intersection of two sets | O(n)            |
 | `Difference(a, b *Set[E]) *Set[E]`  | Return the difference of two sets  | O(n)            |
-| `SymmetricDifference(a, b *Set[E]) *Set[E]` | Return the symmetric difference of two sets | O(n) |
+| `SymmetricDifference(a, b *Set[E]) *Set[E]` | Return the symmetric difference of two sets | O(n + m) |
 
 ## Limitations
 
