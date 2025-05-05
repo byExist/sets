@@ -37,10 +37,8 @@ func Remove[E comparable](s *Set[E], e E) {
 
 // Contains checks if the set contains the given element.
 func Contains[E comparable](s *Set[E], e E) bool {
-	if _, ok := s.data[e]; ok {
-		return true
-	}
-	return false
+	_, ok := s.data[e]
+	return ok
 }
 
 // Pop removes and returns an arbitrary element from the set.
@@ -98,6 +96,9 @@ func Equal[E comparable](a, b *Set[E]) bool {
 
 // IsDisjoint checks if two sets have no elements in common.
 func IsDisjoint[E comparable](a, b *Set[E]) bool {
+	if len(a.data) > len(b.data) {
+		a, b = b, a
+	}
 	for e := range a.data {
 		if _, ok := b.data[e]; ok {
 			return false
@@ -132,7 +133,7 @@ func IsSuperset[E comparable](a, b *Set[E]) bool {
 	return true
 }
 
-// Union returns a new set containing all elements from both sets.
+// Union (A ∪ B): returns a new set containing all elements from both sets.
 func Union[E comparable](a, b *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range a.data {
@@ -144,7 +145,7 @@ func Union[E comparable](a, b *Set[E]) *Set[E] {
 	return result
 }
 
-// Intersection returns a new set containing only elements present in both sets.
+// Intersection (A ∩ B): returns a new set containing only elements present in both sets.
 func Intersection[E comparable](a, b *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range a.data {
@@ -155,7 +156,7 @@ func Intersection[E comparable](a, b *Set[E]) *Set[E] {
 	return result
 }
 
-// Difference returns a new set containing elements in the first set but not in the second.
+// Difference (A − B): returns a new set containing elements in the first set but not in the second.
 func Difference[E comparable](a, b *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range a.data {
@@ -166,7 +167,7 @@ func Difference[E comparable](a, b *Set[E]) *Set[E] {
 	return result
 }
 
-// SymmetricDifference returns a new set containing elements present in either set but not in both.
+// SymmetricDifference (A △ B): returns a new set containing elements present in either set but not in both.
 func SymmetricDifference[E comparable](a, b *Set[E]) *Set[E] {
 	result := New[E]()
 	for e := range a.data {
