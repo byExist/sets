@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"slices"
+	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/byExist/sets"
@@ -15,11 +17,23 @@ func TestString(t *testing.T) {
 	s := sets.New[int]()
 	sets.Add(s, 2)
 	sets.Add(s, 1)
+
 	output := s.String()
 
-	assert.Contains(t, output, "Set{")
-	assert.Contains(t, output, "1")
-	assert.Contains(t, output, "2")
+	assert.True(t, strings.HasPrefix(output, "Set{"))
+	assert.True(t, strings.HasSuffix(output, "}"))
+
+	trimmed := strings.TrimSuffix(strings.TrimPrefix(output, "Set{"), "}")
+	parts := strings.Split(trimmed, ", ")
+
+	var elems []int
+	for _, p := range parts {
+		n, err := strconv.Atoi(p)
+		require.NoError(t, err)
+		elems = append(elems, n)
+	}
+
+	assert.ElementsMatch(t, []int{1, 2}, elems)
 }
 
 func TestMarshalUnmarshalJSON(t *testing.T) {
@@ -486,9 +500,22 @@ func ExampleSet_String() {
 	sets.Add(s, 3)
 	sets.Add(s, 1)
 	sets.Add(s, 2)
-	fmt.Println(s.String())
+
+	str := s.String()
+	trimmed := strings.TrimSuffix(strings.TrimPrefix(str, "Set{"), "}")
+	parts := strings.Split(trimmed, ", ")
+
+	var nums []int
+	for _, p := range parts {
+		n, _ := strconv.Atoi(p)
+		nums = append(nums, n)
+	}
+
+	slices.Sort(nums)
+	fmt.Println(nums)
+
 	// Output:
-	// Set{1, 2, 3}
+	// [1 2 3]
 }
 
 func ExampleSet_MarshalJSON() {
