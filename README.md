@@ -1,21 +1,17 @@
 # sets [![GoDoc](https://pkg.go.dev/badge/github.com/byExist/sets.svg)](https://pkg.go.dev/github.com/byExist/sets) [![Go Report Card](https://goreportcard.com/badge/github.com/byExist/sets)](https://goreportcard.com/report/github.com/byExist/sets)
 
-## What is "sets"?
+A minimal, Python-like set utility for Go.
 
-**sets** is a generic, lightweight wrapper around Go's `map` type.
-It provides a convenient and type-safe way to perform set operations, such as element management (add/remove), containment checks, and standard set operations like union and intersection.  
-It is particularly useful for deduplication, fast membership testing, and working with logically grouped values like tags or permissions.
+## ✨ Features
 
+- ✅ Type-safe and generic set based on Go's `map`
+- ✅ Constant-time: `Add`, `Remove`, `Contains`, `Len`, `Clear`
+- ✅ Supports union, intersection, difference, symmetric difference
+- ✅ Provides iterators and JSON (un)marshaling
+- ❌ Not concurrency-safe
+- ❌ Only for `comparable` types
 
-## Installation
-
-To install sets, use the following command:
-
-```bash
-go get github.com/byExist/sets
-```
-
-## Quick Start
+## 🧱 Example
 
 ```go
 package main
@@ -61,72 +57,34 @@ func main() {
 }
 ```
 
-**Output:**
-```
-1
-2
-3
-Contains 2? true
-Union element: 1
-Union element: 3
-Union element: 4
-```
+## 🔍 API
 
-## API Overview
+| Function/Method | Description |
+|------------------|-------------|
+| `New()` | Create a new empty set |
+| `Add(set, elem)` | Add an element |
+| `Remove(set, elem)` | Remove an element |
+| `Contains(set, elem)` | Check membership |
+| `Len(set)` | Number of elements |
+| `Clear(set)` | Remove all elements |
+| `Values(set)` | Get iterator |
+| `Union(a, b)` | Union of two sets |
+| `Intersection(a, b)` | Intersection of two sets |
+| `Difference(a, b)` | Difference of two sets |
+| `SymmetricDifference(a, b)` | Symmetric difference |
+| `Equal(a, b)` | Check equality |
+| `IsSubset(a, b)` | Check subset |
+| `IsSuperset(a, b)` | Check superset |
+| `IsDisjoint(a, b)` | Check disjointness |
+| `Clone(set)` | Copy set |
 
-### Constructors
-
-| Function                      | Description                   | Time Complexity |
-|-------------------------------|------------------------------|-----------------|
-| `New[E comparable]()`          | Create a new empty set        | O(1)            |
-| `Collect[E comparable](i iter.Seq[E])` | Create a set from an iterator | O(n)            |
-
-### Basic Operations
-
-| Function                       | Description                       | Time Complexity |
-|--------------------------------|---------------------------------|-----------------|
-| `Add(s *Set[E], e E)`           | Add an element to the set        | O(1)            |
-| `Remove(s *Set[E], e E)`        | Remove an element from the set   | O(1)            |
-| `Contains(s *Set[E], e E)`      | Check if an element exists in the set | O(1)        |
-| `Pop(s *Set[E]) (E, bool)`      | Remove and return an arbitrary element | O(1)       |
-| `Clear(s *Set[E])`              | Remove all elements from the set | O(1)            |
-| `Len(s *Set[E]) int`            | Get the number of elements in the set | O(1)        |
-| `Values(s *Set[E]) iter.Seq[E]` | Get an iterator over the set elements | O(n)        |
-| `Clone(s *Set[E]) *Set[E]`      | Create a copy of the set          | O(n)            |
-
-### Set Relations
-
-| Function                         | Description                          | Time Complexity |
-|----------------------------------|------------------------------------|-----------------|
-| `Equal(a, b *Set[E])`             | Check if two sets are equal         | O(n)            |
-| `IsDisjoint(a, b *Set[E])`        | Check if two sets have no elements in common | O(n)      |
-| `IsSubset(a, b *Set[E])`          | Check if set a is a subset of set b | O(n)            |
-| `IsSuperset(a, b *Set[E])`        | Check if set a is a superset of set b | O(n)          |
-
-### Set Operations
-
-| Function                             | Description                         | Time Complexity |
-|-------------------------------------|-----------------------------------|-----------------|
-| `Union(a, b *Set[E]) *Set[E]`       | Return the union of two sets        | O(n)            |
-| `Intersection(a, b *Set[E]) *Set[E]`| Return the intersection of two sets | O(n)            |
-| `Difference(a, b *Set[E]) *Set[E]`  | Return the difference of two sets  | O(n)            |
-| `SymmetricDifference(a, b *Set[E]) *Set[E]` | Return the symmetric difference of two sets | O(n + m) |
-
-### Methods
-
-| Method                             | Description                              | Time Complexity |
-|------------------------------------|------------------------------------------|-----------------|
-| `(*Set[E]) String() string`        | Returns a human-readable string format of the set | O(n)        |
-| `(*Set[E]) MarshalJSON() ([]byte, error)` | Serializes the set to JSON format       | O(n)            |
-| `(*Set[E]) UnmarshalJSON([]byte) error` | Parses JSON data into a set             | O(n)            |
-
-## Limitations
+## ⚠️ Limitations
 
 - Not safe for concurrent access  
   Use a sync.Mutex if multiple goroutines will access the set.
 - Only works with types that are `comparable` in Go  
   (e.g., slices and maps cannot be used as set elements)
 
-## License
+## 🪪 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
